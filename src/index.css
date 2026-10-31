@@ -1,0 +1,560 @@
+:root {
+  --ac-obsidian: #09090b;
+  --ac-surface: rgba(9, 9, 11, 0.92);
+  --ac-border: rgba(0, 229, 255, 0.24);
+  --ac-indigo: #5322ff;
+  --ac-cyan: #00e5ff;
+  --ac-text: #f8fafc;
+  --ac-muted: #a1a1aa;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--ac-obsidian);
+  color: var(--ac-text);
+  overscroll-behavior: none;
+  user-select: none;
+}
+
+/* 1px Swiss Tactical CAD Grid Overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-image:
+    linear-gradient(to right, rgba(0, 229, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 229, 255, 0.035) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* Keep XRButton discreet in top-right corner so the 3D Plumbing Terminal is immediately interactive */
+#XRButtonWrapper {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: auto;
+  height: auto;
+  z-index: 30;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+}
+
+#XRButtonWrapper > * {
+  pointer-events: auto;
+}
+
+#XRButtonWrapper h1 {
+  display: none;
+}
+
+.XRButton {
+  background: rgba(9, 13, 22, 0.92);
+  color: #f8fafc;
+  border: 1px solid rgba(0, 229, 255, 0.38);
+  cursor: pointer;
+  border-radius: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  font-size: 0.78rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 9px 16px;
+  min-width: auto;
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.15s ease;
+}
+
+.XRButton:hover {
+  transform: translateY(-1px);
+  border-color: var(--ac-cyan);
+}
+
+/* Top-Left Diagnostic Spec & Text-Clipping-Reveal Card */
+.ac-top-diagnostic-card {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 20;
+  max-width: min(560px, calc(100vw - 220px));
+  background: var(--ac-surface);
+  border: 1px solid var(--ac-border);
+  border-radius: 10px;
+  padding: 14px 18px;
+  pointer-events: auto;
+}
+
+.ac-kicker-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.ac-mono-kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--ac-cyan);
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.ac-mono-metric {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.74rem;
+  color: #cbd5e1;
+  font-variant-numeric: tabular-nums;
+}
+
+.ac-sep {
+  color: #475569;
+}
+
+/* Text-Clipping-Reveal Mask */
+.ac-clip-mask {
+  overflow: hidden;
+  display: block;
+}
+
+.ac-slogan-reveal {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1.15rem, 1.9vw, 1.55rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.ac-reveal-anim {
+  animation: acClipSlideUp 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes acClipSlideUp {
+  0% {
+    transform: translateY(105%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+
+.ac-station-desc {
+  margin: 6px 0 0 0;
+  font-size: 0.84rem;
+  line-height: 1.4;
+  color: var(--ac-muted);
+}
+
+/* Unified Bottom Control Dock (Zero Viewport Occlusion in Center) */
+.ac-bottom-dock-wrapper {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(920px, 94vw);
+  z-index: 25;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+
+.ac-dock-top-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  pointer-events: auto;
+}
+
+.ac-dock-toggle {
+  background: rgba(9, 13, 22, 0.94);
+  border: 1px solid rgba(100, 116, 139, 0.38);
+  color: #cbd5e1;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  padding: 5px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.ac-dock-toggle:hover {
+  border-color: var(--ac-cyan);
+  color: #ffffff;
+}
+
+.ac-dock-body {
+  width: 100%;
+  background: var(--ac-surface);
+  border: 1px solid var(--ac-border);
+  border-radius: 12px;
+  padding: 12px 16px;
+  pointer-events: auto;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+}
+
+.ac-dock-collapsed {
+  transform: translateY(130%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ac-station-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.ac-station-tab {
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(100, 116, 139, 0.28);
+  color: #94a3b8;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.ac-station-tab:hover {
+  color: #f8fafc;
+  border-color: rgba(0, 229, 255, 0.45);
+}
+
+.ac-station-tab.ac-active {
+  background: rgba(83, 34, 255, 0.28);
+  border-color: var(--ac-cyan);
+  color: #ffffff;
+}
+
+.ac-context-panel {
+  border-top: 1px solid rgba(100, 116, 139, 0.2);
+  padding-top: 10px;
+}
+
+/* Station 01: Valve Slider Row */
+.ac-valve-control-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ac-valve-end-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: #94a3b8;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.ac-cyan {
+  color: var(--ac-cyan);
+}
+
+.ac-indigo {
+  color: #818cf8;
+}
+
+.ac-purge-slider {
+  flex-grow: 1;
+  accent-color: var(--ac-cyan);
+  height: 6px;
+  cursor: pointer;
+}
+
+/* Station 02: Bento Readout Cells */
+.ac-bento-readout-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ac-bento-cell {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.ac-cell-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #f8fafc;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ac-cell-metric {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.71rem;
+  color: #94a3b8;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Station 03: Headless Swarm Selector */
+.ac-swarm-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.ac-swarm-buttons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.ac-agent-btn {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(100, 116, 139, 0.35);
+  color: #cbd5e1;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 7px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.ac-agent-btn:hover {
+  border-color: var(--ac-cyan);
+  color: #ffffff;
+}
+
+.ac-agent-btn.ac-agent-active {
+  background: var(--ac-indigo);
+  border-color: var(--ac-cyan);
+  color: #ffffff;
+}
+
+.ac-swarm-telemetry {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.ac-swarm-desc {
+  font-size: 0.78rem;
+  color: #cbd5e1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Station 04: Ignition Row */
+.ac-ignition-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.ac-ignition-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+/* Buttons */
+.ac-btn-primary {
+  background: rgba(0, 229, 255, 0.14);
+  border: 1px solid var(--ac-cyan);
+  color: #ffffff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 7px;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.ac-btn-primary:hover {
+  background: rgba(0, 229, 255, 0.28);
+  transform: translateY(-1px);
+}
+
+.ac-btn-ignition {
+  background: var(--ac-indigo);
+  border: 1px solid var(--ac-cyan);
+  color: #ffffff;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 9px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.ac-btn-ignition:hover {
+  background: #6336ff;
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+.ac-btn-secondary {
+  background: rgba(30, 41, 59, 0.85);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  color: #e2e8f0;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 7px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.ac-btn-secondary:hover {
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+/* Playground Modal */
+.ac-playground-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(6, 8, 13, 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.ac-hidden {
+  display: none !important;
+}
+
+.ac-modal-box {
+  max-width: 640px;
+  width: 100%;
+  background: #090d16;
+  border: 1px solid var(--ac-cyan);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ac-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ac-modal-title {
+  margin: 0;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.ac-modal-copy {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: #cbd5e1;
+}
+
+.ac-modal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.ac-modal-stat {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(100, 116, 139, 0.25);
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ac-stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: #94a3b8;
+}
+
+.ac-stat-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.ac-modal-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+@media (max-width: 768px) {
+  .ac-station-tabs {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .ac-valve-control-row,
+  .ac-bento-readout-row,
+  .ac-swarm-row,
+  .ac-ignition-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .ac-modal-grid {
+    grid-template-columns: 1fr;
+  }
+}
